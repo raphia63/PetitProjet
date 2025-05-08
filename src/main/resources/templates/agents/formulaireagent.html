@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${agent.id} ? 'Modifier Agent' : 'Nouvel Agent'"></title>
+	<link th:href="@{/webjars/bootstrap/5.3.3/css/bootstrap.min.css}" rel="stylesheet">
+	<script th:src="@{/webjars/bootstrap/5.3.3/js/bootstrap.bundle.min.js}"></script>
+</head>
+<body>
+<div class="container mt-4">
+    <h1 th:text="${agent.id} ? 'Modifier Agent' : 'Nouvel Agent'"></h1>
+    
+    <form th:action="@{/agents/save}" th:object="${agent}" method="post">
+        <input type="hidden" th:field="*{id}">
+        
+        <div class="mb-3">
+            <label for="nom" class="form-label">Nom</label>
+            <input type="text" class="form-control" id="nom" th:field="*{nom}" required>
+        </div>
+        
+        <div class="mb-3">
+            <label for="prenom" class="form-label">Prénom</label>
+            <input type="text" class="form-control" id="prenom" th:field="*{prenom}" required>
+        </div>
+        
+        <button type="submit" class="btn btn-primary">Enregistrer</button>
+        <a th:href="@{/agents}" class="btn btn-secondary">Annuler</a>
+    </form>
+</div>
+</body>
+</html>

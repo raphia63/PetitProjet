@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Liste des Agents</title>
+	<link th:href="@{/webjars/bootstrap/5.3.3/css/bootstrap.min.css}" rel="stylesheet">
+	<script th:src="@{/webjars/bootstrap/5.3.3/js/bootstrap.bundle.min.js}"></script>
+</head>
+<body>
+<div class="container mt-4">
+    <h1>Liste des Agents</h1>
+    
+    <div class="row mb-3">
+        <div class="col-md-6">
+            <a th:href="@{/agents/new}" class="btn btn-primary">Nouvel Agent</a>
+        </div>
+        <div class="col-md-6">
+			<form th:action="@{/agents}" method="get" class="d-flex">
+			    <input type="text" name="keyword" th:value="${keyword}" class="form-control me-2" placeholder="Rechercher...">
+			    <button type="submit" class="btn btn-outline-success">Rechercher</button>
+			</form>
+        </div>
+    </div>
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+              <!--  <th>ID</th> -->
+                <th>Nom</th>
+                <th>Prénom</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="agent : ${agents}">
+                <!-- <td th:text="${agent.id}"></td> -->
+                <td th:text="${agent.nom}"></td>
+                <td th:text="${agent.prenom}"></td>
+                <td>
+                    <a th:href="@{/agents/edit/{id}(id=${agent.id})}" class="btn btn-sm btn-warning">Modifier</a>
+                    <a th:href="@{/agents/delete/{id}(id=${agent.id})}" class="btn btn-sm btn-danger" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet agent?');">Supprimer</a>
+					<a th:href="@{/agents/{id}/contrats(id=${agent.id})}" class="btn btn-sm btn-info">Voir Contrats</a>
+				</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div th:if="${agents.totalPages > 1}">
+        <ul class="pagination">
+            <li class="page-item" th:each="pageNumber : ${pageNumbers}">
+                <a th:href="@{/agents(page=${pageNumber}, size=${agents.size}, keyword=${keyword})"
+                   th:text="${pageNumber}"
+                   class="page-link"
+                   th:classappend="${pageNumber == agents.number + 1} ? 'active'"></a>
+            </li>
+        </ul>
+    </div>
+</div>
+</body>
+</html>
